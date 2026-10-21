@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>ClipCut — Lossless Video Cutter</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="ClipCut home"><span class="brand-mark">✂</span><span>ClipCut</span></a>
+      <span class="tag">LOSSLESS VIDEO CUTTER</span>
+    </header>
+
+    <section class="intro">
+      <p class="eyebrow">SIMPLE · LOCAL · NO RE-ENCODING</p>
+      <h1>Keep the moment.<br><span>Cut the rest.</span></h1>
+      <p class="subhead">Trim a section from your video while keeping its original encoded streams. Your files are processed locally by this app on your computer.</p>
+    </section>
+
+    <section class="panel upload-panel" id="uploadPanel">
+      <div class="upload-icon" aria-hidden="true">↑</div>
+      <h2>Choose a video to cut</h2>
+      <p>MP4, MOV, MKV, WebM, AVI and other common video containers</p>
+      <label class="button primary" for="videoFile">Select video</label>
+      <input id="videoFile" type="file" accept="video/*,.mkv,.avi,.ts,.mts,.m2ts,.mpeg,.mpg" hidden>
+      <p class="muted small" id="uploadLimit">Maximum upload size is configured by the server.</p>
+      <div id="dropHint" class="drop-hint">or drag and drop a video here</div>
+    </section>
+
+    <section id="editor" class="editor hidden">
+      <div class="section-heading">
+        <div><p class="eyebrow">YOUR VIDEO</p><h2 id="videoName">Video preview</h2></div>
+        <button class="button secondary" id="changeVideo" type="button">Change video</button>
+      </div>
+
+      <div class="preview-wrap">
+        <video id="videoPreview" controls playsinline preload="metadata"></video>
+      </div>
+      <div class="metadata-row">
+        <span>Original duration <strong id="originalDuration">—</strong></span>
+        <span>File size <strong id="originalSize">—</strong></span>
+      </div>
+
+      <div class="panel trim-panel">
+        <div class="section-heading compact">
+          <div><p class="eyebrow">TRIM SELECTION</p><h2>Choose your clip</h2></div>
+          <span class="pill">Stream copy</span>
+        </div>
+        <div class="time-grid">
+          <div class="field">
+            <label for="startTime">Start time <span>HH:MM:SS</span></label>
+            <div class="time-input-wrap"><input id="startTime" type="text" inputmode="numeric" value="00:00:00" aria-describedby="timeHelp"><button class="tiny-button" id="setStart" type="button" title="Use current preview position">Use preview</button></div>
+          </div>
+          <div class="field">
+            <label for="endTime">End time <span>HH:MM:SS</span></label>
+            <div class="time-input-wrap"><input id="endTime" type="text" inputmode="numeric" value="00:00:10" aria-describedby="timeHelp"><button class="tiny-button" id="setEnd" type="button" title="Use current preview position">Use preview</button></div>
+          </div>
+        </div>
+        <p id="timeHelp" class="muted small">Enter hours, minutes, and seconds. You can also seek the preview and use “Use preview”.</p>
+        <div class="duration-card">
+          <div><span class="muted small">Selected clip duration</span><strong id="clipDuration">00:00:10</strong></div>
+          <span id="durationStatus" class="duration-status">Ready to trim</span>
+        </div>
+        <div class="range-row">
+          <input id="startRange" type="range" min="0" max="10" step="0.1" value="0" aria-label="Start position">
+          <input id="endRange" type="range" min="0" max="10" step="0.1" value="10" aria-label="End position">
+        </div>
+        <p class="muted small">The sliders are convenient for rough positioning. Use the time fields for more precise input.</p>
+        <div id="errorBox" class="notice error hidden" role="alert"></div>
+        <button class="button primary full" id="cutButton" type="button"><span>✂</span> Cut video</button>
+        <p class="muted small center">No re-encoding is performed. Keyframes can affect the exact cut boundary.</p>
+      </div>
+
+      <section id="resultPanel" class="panel result-panel hidden">
+        <div class="result-heading"><div class="success-icon">✓</div><div><p class="eyebrow">CLIP READY</p><h2>Your cut is complete</h2></div></div>
+        <video id="resultPreview" controls playsinline preload="metadata"></video>
+        <div class="result-meta"><span>Output duration <strong id="resultDuration">—</strong></span><span>Output size <strong id="resultSize">—</strong></span></div>
+        <p class="notice" id="resultNote"></p>
+        <a class="button primary full download-button" id="downloadButton" href="#">↓ Download clip</a>
+      </section>
+    </section>
+
+    <div id="busyOverlay" class="busy hidden" role="status" aria-live="polite">
+      <div class="spinner"></div><strong id="busyTitle">Processing video…</strong><p id="busyText">This can take a little while for large files.</p>
+    </div>
+
+    <footer>
+      <p>ClipCut runs on your machine. Uploaded files are stored in this app's local folders.</p>
+      <p class="foot-note">Lossless stream copying preserves encoded quality, but keyframe-based seeking may not produce frame-exact cuts.</p>
+    </footer>
+  </main>
+  <script src="/app.js" defer></script>
+</body>
+</html>
